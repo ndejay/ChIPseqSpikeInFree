@@ -573,7 +573,8 @@ CalculateSF <- function(data, metaFile = "sample_meta.txt",minFirstTurn = "auto"
   meta$SF <- NA
   for (ab in unique(meta$ANTIBODY)) {
     inds <- grep(paste0("^", ab, "$"), meta$ANTIBODY) # grep may cause problem sometime
-    SF <- round(max(meta$SLOPE[inds]) / meta$SLOPE[inds], 2)
+    # Let's keep the SF absolute instead of relative.
+    SF <- round(1.0 / meta$SLOPE[inds], 8)
     meta$SF[inds] <- SF
   }
   meta$SF[meta$SF == 0 ] <- 1  # happened when Xa could equal Xb, only if user manually set maxLastTurn and cutoff_QC inapporiately
